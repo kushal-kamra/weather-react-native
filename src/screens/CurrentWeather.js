@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     color: "black",
   },
   highLow: {
-    volor: "black",
+    color: "black",
     fontSize: 20,
   },
   highLowWrapper: {
