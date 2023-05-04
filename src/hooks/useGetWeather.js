@@ -9,21 +9,6 @@ export const useGetWeather = () => {
   const [lat, setLat] = useState([]);
   const [long, setLong] = useState([]);
 
-  const fetchWeatherData = async () => {
-    try {
-      const res = await fetch(
-        `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${WEATHER_API_KEY}&units=metric`
-      );
-      const data = await res.json();
-      setWeather(data);
-      setLoading(false);
-    } catch (err) {
-      setError("could not fetch weather");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -38,7 +23,24 @@ export const useGetWeather = () => {
       setLong(location.coords.longitude);
       await fetchWeatherData();
     })();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lat, long]);
+
+  const fetchWeatherData = async () => {
+    try {
+      const res = await fetch(
+        `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${WEATHER_API_KEY}&units=metric`
+      );
+      const data = await res.json();
+      setWeather(data);
+      setLoading(false);
+    } catch (err) {
+      setError("could not fetch weather");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return [loading, error, weather];
 };
